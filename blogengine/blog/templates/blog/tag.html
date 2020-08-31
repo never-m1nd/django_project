@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ tag_detail.title|title }}
+{% endblock %}
+
+{% block content %}
+    <div class="mt-5">
+        <h2>Posts for {{ tag.title }}:</h2>
+        {% for post in tag.posts.all %}
+            {% include 'blog/includes/post_card_template.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
+

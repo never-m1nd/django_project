@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create Post
+{% endblock %}
+
+{% block content %}
+    <div class="mt-5">
+        <form action="{% url 'create_post_url' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="PostTitle">Title</label>
+                <input type="text" class="form-control" id="PostTitle" placeholder="My cool post" name="post_title">
+            </div>
+              <div class="form-group">
+                <label for="PostTitle">Tags</label>
+                <input type="text" class="form-control" id="Tags" placeholder="Add some tags" name="post_tags">
+            </div>
+            <div class="form-group mb-5">
+                <label for="PostBody">What you think</label>
+                <textarea class="form-control" id="PostBody" rows="20" name="post_body"></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark mb-2">Submit</button>
+        </form>
+    </div>
+{% endblock %}
