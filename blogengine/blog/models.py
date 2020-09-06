@@ -13,6 +13,11 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_update_url(self):
+        return reverse('post_update_url', kwargs={'pk': self.pk,
+                                                  'slug': self.slug
+                                                  })
+
     def get_absolute_url(self):
         kwargs = {
             'pk': self.pk,
@@ -20,16 +25,9 @@ class Post(models.Model):
         }
         return reverse('post_detail_url', kwargs=kwargs)
 
-    # def get_absolute_url(self):
-    #     return reverse('post_detail_url', kwargs={'slug': self.slug})
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.title)
-    #     super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-pub_date']
@@ -44,10 +42,6 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('tag_detail_url', kwargs={'slug': self.slug})
-
-    def get_update_url(self):
-        return reverse('post_update_url', kwargs={'title': self.title,
-                                                  'pk': self.pk})
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect
 from django.views import generic
 from .forms import *
+from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -22,11 +23,27 @@ class Index(generic.ListView):
     template_name = 'blog/base_blog.html'
     context_object_name = 'posts'
 
+    def get_queryset(self):
+        try:
+            search = self.request.GET.get('search', '')
+        except:
+            search = ''
+        if search != '':
+            object_list = self.model.objects.filter(Q(title__icontains=search) | Q(body__icontains=search))
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
 
 class PostDetail(generic.DetailView):
     model = Post
     template_name = 'blog/post.html'
     query_pk_and_slug = True
+
+
+class DeletePost(generic.DeleteView):
+    model = Post
+    success_url = '/'
 
 
 class CreatePost(generic.View):

@@ -12,8 +12,8 @@
         {%if field.errors %}
         {{field.errors}}
         {%endif%}
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
-            <div>
+            <label class="control-label" for="id_{{ field.name }}"><h4>{{ field.label }}</h4></label>
+            <div class="mb-4">
                 <input type="text" class="form-control"
                        name="{{ field.name }}"
                        id="id_{{ field.name }}"

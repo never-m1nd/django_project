@@ -19,4 +19,8 @@
         </p>
         <p style="font-size: 20px">{{ post.body }}</p>
     </div>
+<div class="mt-5">
+    <a class="btn btn-dark" href="{% url 'post_update_url' post.pk post.slug %}">Edit</a>
+    <a class="btn  btn-danger" href="{% url 'post_delete_url' pk=post.pk slug=post.slug %}">Delete Post</a>
+</div>
 {% endblock %}

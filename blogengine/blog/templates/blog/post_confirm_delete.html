@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object }}
+{% endblock %}
+
+{% block content %}
+    <form class="mt-5" method="post">{% csrf_token %}
+        <h3>Are you sure you want to delete "{{ object }}"?</h3>
+        <button type="submit" class="btn btn-danger btn-block">Confirm</button>
+    </form>
+{% endblock %}
