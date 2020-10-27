@@ -1,7 +1,6 @@
 from django import forms
 from .models import Post, Tag
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.exceptions import ValidationError
 
 
 class CreatePostForm(forms.Form):
@@ -19,9 +18,8 @@ class CreatePostForm(forms.Form):
                     new_tag = Tag.objects.get(title=tag)
                 except ObjectDoesNotExist:
                     new_tag = Tag.objects.create(title=tag)
-                    new_post.tags.add(new_tag)
-                else:
-                    new_post.tags.add(new_tag)
+                new_post.tags.add(new_tag)
+
         return new_post
 
 #

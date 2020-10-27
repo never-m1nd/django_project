@@ -1,15 +1,11 @@
 from django.shortcuts import render, reverse, redirect
-from django.http import HttpResponseRedirect
 from django.views import generic
 from .forms import *
 from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 
 # Create your views here.
-
-
-def redirect_to_index(request):
-    return HttpResponseRedirect('blog/')
 
 
 class TagDetail(generic.DetailView):
@@ -24,10 +20,7 @@ class Index(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        try:
-            search = self.request.GET.get('search', '')
-        except:
-            search = ''
+        search = self.request.GET.get('search', '')
         if search != '':
             object_list = self.model.objects.filter(Q(title__icontains=search) | Q(body__icontains=search))
         else:
@@ -41,12 +34,14 @@ class PostDetail(generic.DetailView):
     query_pk_and_slug = True
 
 
-class DeletePost(generic.DeleteView):
+class DeletePost(LoginRequiredMixin, PermissionRequiredMixin, generic.DeleteView):
+    permission_required = 'is_staff'
     model = Post
     success_url = '/'
 
 
-class CreatePost(generic.View):
+class CreatePost(LoginRequiredMixin, generic.View):
+
     def get(self, request):
         form = CreatePostForm()
         return render(request, 'blog/test_post_create.html', {'form': form})
@@ -60,7 +55,9 @@ class CreatePost(generic.View):
         return render(request, 'blog/test_post_create.html', context={'form': form})
 
 
-class UpdatePost(generic.View):
+class UpdatePost(LoginRequiredMixin,PermissionRequiredMixin, generic.View):
+    permission_required = 'is_stuff'
+
     def get(self, request, pk, slug):
         post = Post.objects.get(pk=pk)
         form = CreatePostForm()
